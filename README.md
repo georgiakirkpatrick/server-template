@@ -1,54 +1,3 @@
-
-## Dependencies
-### Node
-
-### Express
-Express is a minimalist web framework for Node.js. Web frameworks are tools and software make building applications for the web easier. In this case, Express abstracts away many of the difficulties of working directly with Node.
-
-## Middleware
-Middleware is a function that an Express server runs between receiving a request and responding to that request.
-
-Middleware function structure
-The structure of a middleware function is:
-const middleware = (req, res, next) => { 
-  <!-- function body -->
-}
-
-Middleware parameters
-* The req parameter stands for request. Information and methods related to the incoming request will be stored in this object.
-* The res parameter stands for response. This object has information and methods related to sending back a response from the server.
-* The next parameter, when called, will tell Express that this middleware function is complete. It will then go on to the next piece of middleware.
-
-The middleware send() method
-Middleware can use the send() method that comes on the res object. Calling send() in this way will send back the string to the client.
-
-const sayHello = (req, res, next) => {
-  res.send("Hello")
-
-  next()
-}
-
-The Express use() method
-Attached to your Express application (app) is a method called use(). This method will allow you to attach middleware to the pipeline.
-
-app.use(sayHello)
-
-## Express error handler
-Express has a special and slightly odd way of creating an error handler. It is exactly the same as other middleware, except for one feature: it has an extra parameter.
-
-app.use((err, req, res, next) => {
-  console.error(err)
-  res.send(err)
-})
-
-If you try to access this function normally, you may have a hard time. The error-handler middleware only gets called in one of two cases:
-
-1. When there is a problem in the application itself (for example, if you made a mistake in your code).
-2. When you specifically trigger it using the next() function in a previous middleware function.
-
-
-
-
 <a name="readme-top"></a>
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -103,77 +52,174 @@ If you try to access this function normally, you may have a hard time. The error
 
 
 
-<!-- ABOUT THE PROJECT
-  This is an important component of your project that many new developers often overlook.
-
-  Your description is an extremely important aspect of your project. A well-crafted description allows you to show off your work to other developers as well as potential employers.
-
-  The quality of a README description often differentiates a good project from a bad project. A good one takes advantage of the opportunity to explain and showcase:
-
-  - What your application does,
-  - Why you used the technologies you used,
-  - Some of the challenges you faced and features you hope to implement in the future.
-
-  Make sure these questions are answered in the README.  The About section may be the right place to touch on these.
-  - What was your motivation?
-  - Why did you build this project?
-  - What problem does it solve?
-  - What did you learn?
-  - What makes your project stand out?
-  If your project has a lot of features, consider adding a "Features" section and listing them there.
--->
-
 ## About the project
 
 [![Product Name Screen Shot][product-screenshot]]
+
+This is a server template.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built with
 
 * [![JavaScript][javascript-shield]][javascript-url]
-* Node
+* [![Node][node-shield]][node-url]
 * [![Express][Expressjs.com]][Express-url]
-* Nodemon
-* Morgan
-* Cors
-* Dotenv
+* [![Cors][cors-shield]][cors-url]
+* [![Morgan][morgan-shield]][morgan-url]
+* [![Dotenv][dotenv-shield]][dotenv-url]
 * [![PostgreSQL][PostgreSQL-shield]][PostgreSQL-url]
-* [![Mocha][Mocha-shield]][Mocha-url]
-* [![Chai][Chai-shield]][Chai-url]
+* [![Nodemon][nodemon-shield]][nodemon-url]
+* [![Jest][jest-shield]][jest-url]
+* [![Supertest][supertest-shield]][supertest-url]
 
-Why did I choose these packages?
-Express - is the API server
-Cors - allows us to make requests from the front end
-Morgan - is a logger so we can see incomign requests
-Dotenv - allows us to hide our API key from GitHub
+#### Javascript
+<!-- Why did I use this?
+Explain how it is used in the Server Template. -->
 
-Why did I choose these development packages?
-Nodemon - is a development server that will automatically refresh the server as we code.
+#### Node.js
+<!-- Why did I use this?-->
+**Use the process.env global variable to set the PORT variable equal to 5000 in server.js.**  The process.env global variable is created by Node.js.  It returns an object containing the user environment.  Click [here](https://nodejs.org/docs/latest/api/process.html#processenv) for more about process.env.
+```
+const { PORT = 5000 } = process.env
+```
+
+#### Express
+Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+In Server Template, Express represents the API server.
+
+Here is how we set up Express in app.js:
+1. **Require Express and asign it to the variable "express" in app.js.** 
+  ```  
+  const express = require("express")
+  ```  
+2. **Create an Express application in app.js.** The express() function is a top-level function exported by the express module.  We assign the application to the variable "app".  Click [here](https://expressjs.com/en/5x/api.html#express) for more on the "express()" method.
+  ```  
+  const app = express()  
+  ```  
+3. **Use the "app.use()" and "express.json()" methods  in app.js to tell the app to parse incoming requests with JSON.**  
+Click [here](https://expressjs.com/en/5x/api.html#app.use) for more on the "app.use()" method.  Click [here](https://expressjs.com/en/5x/api.html#express.json) for more on the "express.json()" method.  Click [here](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON) for more about JSON.
+```  
+app.use(express.json)
+```
+4. **Create an Express error handler in app.js.**  The error-handler middleware only gets called in one of two cases: when there is a problem in the application itself (for example, there is a mistake in application's code) **or** when the next() function specifically triggers the error handler from a previous middleware function.
+```  
+app.use((err, req, res, next) => {
+  console.error(err)
+  res.send(err)
+})
+```
+5. **Listen for connections on the specified host and port with app.listen() in server.js.**  This function will run when the server starts.  Click [here](https://expressjs.com/en/5x/api.html#app.listen) for more about the app.listen() method.
+```
+app.listen(PORT, listener)
+```
+6. **Route HTTP GET requests to the specified path with app.get().**  Click [here](https://expressjs.com/en/5x/api.html#app.get.method) for more about the app.get() method.
+```
+app.get("/route", fetchContent)
+```
+
+#### Cors
+Allows us to make requests from the frontend.
+<!-- Explain how it is used in the Server Template. -->
+
+#### Morgan
+A logger that allows us to see incoming requests.
+<!-- Explain how it is used in the Server Template. -->
+
+#### Dotenv
+Allows us to hide our API key from GitHub
+<!-- Explain how it is used in the Server Template. -->
+
+#### Nodemon
+A development server that will automatically refresh the server as we code.
+<!-- Explain how it is used in the Server Template. -->
+
+#### Jest
+<!-- Why did I use this?
+Explain how it is used in the Server Template. -->
+
+#### Supertest
+<!-- Why did I use this?
+Explain how it is used in the Server Template. -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- FEATURES
-If your project has a lot of features, consider including this section and list the features here.
-
--->
 ## Features
 
-### Feature One
+### Middleware
+Middleware is a function that an Express server runs between receiving a request and responding to that request.
 
-### Feature Two
+Middleware function structure
+The structure of a middleware function is:
+```
+const middleware = (req, res, next) => { 
+  <!-- function body -->
+}
+```
+
+#### Middleware parameters
+* The req parameter stands for request. Information and methods related to the incoming request will be stored in this object.
+* The res parameter stands for response. This object has information and methods related to sending back a response from the server.
+* The next parameter, when called, will tell Express that this middleware function is complete. It will then go on to the next piece of middleware.
+
+#### The middleware send() method
+Middleware can use the send() method that comes on the res object. Calling send() in this way will send back the string to the client.
+
+const sayHello = (req, res, next) => {
+  res.send("Hello")
+
+  next()
+}
+
+### Express methods
+* **use** - app.use() - this method will allow you to attach middleware to the pipeline.
+  
+ROUTES - Routes are middleware except they will only respond when the request URL matches the route.
+* **delete** - app.delete()
+* **get** - app.get()
+  ```
+  app.get("/route", (req, res) => {
+    res.send("OK");
+  })
+  ```
+* **post** - app.post()
+* **put** - app.put()
+
+### Data and Database folders
+To create a server with a basic text-storage API (also known as a pastebin API) that allows users to store code snippets and plain text to share with others, build in the "src/data/" directory and delete the "src/db/"directory.
+
+To create a server with a database, ... and delete the "src/data/" directory.
 
 ### Feature Three
+Error handler in app.js
+// You will notice that the only difference in the below middleware is that the first parameter is err. The names of the parameters do not matter; instead, Express is looking for whether or not there are four parameters.
+// If you try to access this function normally, you may have a hard time. The error-handler middleware only gets called in one of two cases:
+// When there is a problem in the application itself (for example, if you made a mistake in your code).
+// When you specifically trigger it using the next() function in a previous middleware function.
+// No matter where you put this error handler, it will not be triggered unless one of the above conditions arises. Express does this so that you have a tool dedicated to handling issues that may arise.
+// Always include an Express error handler function below the middleware that will catch any not-found routes.
+app.use((req, res, next) => {
+  res.send(`The route ${req.path} does not exist!`);
+})
+
+### Testing with Jest and SuperTest
+Jest refresher
+
+Keep in mind that Jest includes the following functions to help you write tests:
+
+describe(), which groups together a set of related tests
+test() (or it()), which describes an individual test case and is typically nested inside of the describe() function
+The expect object, which provides access to matchers (like toBe() and toEqual()) that allow you to check whether some part of your code has produced an expected outcome
+
+beforeEach
+afterEach
+before
+afterstart
 
 
 
-<!-- GETTING STARTED 
-If you are working on a project that a user needs to install or run locally in a machine, you should include the steps required to install your project and also the required dependencies if any.
-
-Provide a step-by-step description of how to get the development environment set and running.
--->
 ## Getting started
 
 Follow these steps to get a local copy of Server Template up and running.
@@ -201,30 +247,22 @@ Update [Node.js](https://nodejs.org/en) and [npm](https://www.npmjs.com/about) t
 
 1. In the command line, navigate to the directory where you would like to copy Server Template.
 2. Clone the server-template repository.
-  ```
-  git clone https://github.com/georgiakirkpatrick/server-template.git
-  ```
+```
+git clone https://github.com/georgiakirkpatrick/server-template.git
+```
 3. Navigate to the server-template directory and initialize Node.  This step will create a package.json in  your project directory.
-  ```
-  cd server-template && npm init -y
-  ```
-  The "-y" flag in the above code accepts all the default options ```npm init``` would otherwise prompt you to choose.
+```
+cd server-template && npm init -y
+```
+The "-y" flag in the above code accepts all the default options ```npm init``` would otherwise prompt you to choose.
 4. Install Server Template's npm packages.
-  ```
-  npm install
-  ```
+```
+npm install
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- USAGE EXAMPLES 
-Provide instructions and examples so users/contributors can use the project. This will make it easy for them in case they encounter a problem – they will always have a place to reference what is expected.
-
-You can also make use of visual aids by including materials like screenshots to show examples of the running project and also the structure and design principles used in your project.
-
-Also if your project will require authentication like passwords or usernames, this is a good section to include the credentials.
--->
 
 ## Usage
 
@@ -254,7 +292,6 @@ _For more examples, please refer to the [Documentation](https://github.com/georg
 
 
 
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Server Template is an open souce project.  Any contributions you make to this project are **greatly appreciated**.
@@ -297,14 +334,6 @@ gh pr create
 
 
 
-<!-- LICENSE 
-For most README files, this is usually considered the last part. It lets other developers know what they can and cannot do with your project.
-
-We have different types of licenses depending on the kind of project you are working on. Depending on the one you will choose it will determine the contributions your project gets.
-
-The most common one is the GPL License which allows other to make modification to your code and use it for commercial purposes. If you need help choosing a license,  check out this link: https://choosealicense.com/
--->
-
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -313,7 +342,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 
-<!-- CONTACT -->
 ## Contact
 
 The best way to get in touch with me is to use the contact form on my website: [georgiakirkpatrick.com](https://georgiakirkpatrick.com/#contact)
@@ -323,17 +351,12 @@ You can also connect with me on LinkedIn: [Georgia's LinkedIn][linkedin-url]
 
 
 
-<!-- ACKNOWLEDGMENTS 
-If you worked on the project as a team or an organization, list your collaborators/team members. You should also include links to their GitHub profiles and social media too.
-
-Also, if you followed tutorials or referenced a certain material that might help the user to build that particular project, include links to those here as well.
-
-This is just a way to show your appreciation and also to help others get a first hand copy of the project.
--->
 ## Acknowledgments
 
 * Thanks to Coding Garden for the video tutorial [Build a YouTube API proxy server with Node.js/Express and a filterable list with vanilla JavaScript](https://www.youtube.com/watch?v=Q4RiI7bvpso)
-* [How to Write a Good README File for Your GitHub Project](https://www.freecodecamp.org/news/how-to-write-a-good-readme-file/)
+* Robust Server Structure 2.3 RESTful APIs
+* API Design Guide https://apiguide.readthedocs.io/en/latest/build_and_publish/use_RESTful_urls.html#:~:text=Under%20REST%20principles%2C%20a%20URL%20identifies%20a%20resource.&text=URLs%20should%20include%20nouns%2C%20not,consistency%20(no%20singular%20nouns).
+* JSON:API https://jsonapi.org
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -355,41 +378,23 @@ This is just a way to show your appreciation and also to help others get a first
 [product-screenshot]: images/screenshot.png
 
 <!-- BUILT WITH BADGES AND LINKS -->
-[html-shield]: https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=html5&logoColor=fff
-[html-url]: https://html.spec.whatwg.org
-[css-shield]: https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3
-[css-url]: https://www.w3.org/TR/CSS/#css
 [javascript-shield]: https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000
 [javascript-url]: https://262.ecma-international.org
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[react-router-shield]: https://img.shields.io/badge/React%20Router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=fff
-[react-router-url]: https://reactrouter.com
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[youtube-shield]: https://img.shields.io/badge/YouTube-ff0000?style=for-the-badge&logo=YouTube
-[youtube-api-url]: https://developers.google.com/youtube/v3/docs/search/list
+[node-shield]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=fff
+[node-url]: https://nodejs.org/en/about/resources/
 [Expressjs.com]: https://img.shields.io/badge/EXPRESS-000000?style=for-the-badge&logo=express
 [Express-url]: https://expressjs.com
+[cors-shield]: https://img.shields.io/badge/cors-181717?style=for-the-badge&logo=github
+[cors-url]: https://github.com/expressjs/cors#readme
+[morgan-shield]: https://img.shields.io/badge/morgan-181717?style=for-the-badge&logo=github
+[morgan-url]: https://github.com/expressjs/morgan#readme
+[dotenv-shield]: https://img.shields.io/badge/dotenv-181717?style=for-the-badge&logo=github
+[dotenv-url]: https://github.com/motdotla/dotenv#readme
 [PostgreSQL-shield]: https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org
-[font-awesome-shield]: https://img.shields.io/badge/Font%20Awesome-528DD7?style=for-the-badge&logo=font%20awesome&logoColor=fff
-[font-awesome-url]: https://fontawesome.com
-[Mocha-shield]: https://img.shields.io/badge/Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white
-[Mocha-url]: https://mochajs.org
-[Chai-shield]: https://img.shields.io/badge/Chai-A30701?style=for-the-badge&logo=chai
-[Chai-url]: https://www.chaijs.com
+[nodemon-shield]: https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=fff
+[nodemon-url]: https://nodemon.io
+[supertest-shield]: https://img.shields.io/badge/supertest-181717?style=for-the-badge&logo=github
+[supertest-url]: https://github.com/ladjs/supertest#readme
 [jest-shield]: https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest
 [jest-url]: https://jestjs.io
